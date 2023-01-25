@@ -26,7 +26,7 @@ func Registro(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	_,encontrado,_ := bd.existeUsuario(t.Email)
+	_,encontrado,_ := bd.ExisteUsuario(t.Email)
 	if encontrado == true{
 		http.Error(w, "El usuario con ese email ya esta registrado", 400)
 		return
