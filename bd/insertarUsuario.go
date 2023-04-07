@@ -2,25 +2,43 @@ package bd
 
 import (
 	"context"
+	"log"
 	"time"
-	"github.com/pedroluti1989/twiter/models"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 
+	"twiter/models"
+
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 /* para insrtar un usuario en la bd */
-func InsertarUsuario(u models.Usuario) (string, bool, error){
-	
-	ctx, cancel := context.WithTimeout( context.Background(), 15*time.Second)
+func InsertarUsuario(u models.Usuario) (string, bool, error) {
+
+	log.Println(u)
+
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
-	db        := MongoCN.Database("twiter")
+	db := MongoCN.Database("twiter")
 	coleccion := db.Collection("usuarios")
 
-	u.Password,_ = EncriptarPassword(u.Password)
+	u.Password, _ = EncriptarPassword(u.Password)
 
-	result, err := coleccion.InsertOne(ctx, u)
-	if err != nil{
+	registro := bson.M{
+		"nombre":    u.Nombre,
+		"apellido":  u.Apellidos,
+		"fechaNac":  u.FechaNac,
+		"email":     u.Email,
+		"password":  u.Password,
+		"biografia": u.Biografia,
+		"sitioWeb":  u.SitioWeb,
+		"avatar":    u.Avatar,
+		"banner":    u.Banner,
+		"ubicacion": u.Ubicacion,
+	}
+
+	result, err := coleccion.InsertOne(ctx, registro)
+	if err != nil {
 		return "", false, err
 	}
 

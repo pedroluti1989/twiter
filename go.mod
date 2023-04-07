@@ -1,4 +1,4 @@
-module github.com/pedroluti1989/twiter
+module twiter
 
 go 1.19
 

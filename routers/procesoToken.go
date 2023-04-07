@@ -1,27 +1,28 @@
 package routers
 
-
-
 import (
-	"strings"
 	"errors"
+	"strings"
+	"twiter/bd"
+	"twiter/models"
+
 	jwt "github.com/dgrijalva/jwt-go"
-	"github.com/pedroluti1989/twiter/models"
-	"github.com/pedroluti1989/twiter/bd"
 )
+
 /*Email valor de Email usado en todos los EndPoints */
 var Email string
 
 /*IDUsuario es el ID devuelto del modelo, que se usará en todos los EndPoints */
 var IDUsuario string
-/* Procesar el token */
-func ProcesoToken(tk string) (*models.Claim, bool, string, error){
-    miClave := []byte("Pedro_desarrollo_go_2214")
+
+/*ProcesoToken proceso token para extraer sus valores */
+func ProcesoToken(tk string) (*models.Claim, bool, string, error) {
+	miClave := []byte("Pedro_desarrollo_go_2214")
 	claims := &models.Claim{}
-    
+
 	splitToken := strings.Split(tk, "Bearer")
 	if len(splitToken) != 2 {
-		return claims, false, string(""), errors.New("Formato de Token Invalido")
+		return claims, false, string(""), errors.New("formato de token invalido")
 	}
 
 	tk = strings.TrimSpace(splitToken[1])
@@ -29,12 +30,12 @@ func ProcesoToken(tk string) (*models.Claim, bool, string, error){
 	tkn, err := jwt.ParseWithClaims(tk, claims, func(token *jwt.Token) (interface{}, error) {
 		return miClave, nil
 	})
-
 	if err == nil {
 		_, encontrado, _ := bd.ExisteUsuario(claims.Email)
 		if encontrado == true {
 			Email = claims.Email
 			IDUsuario = claims.ID.Hex()
+			//log.Fatal(IDUsuario)
 		}
 		return claims, encontrado, IDUsuario, nil
 	}

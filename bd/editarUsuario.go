@@ -1,31 +1,30 @@
 package bd
 
-import(
+import (
 	"context"
 	"time"
-	"github.com/pedroluti1989/twiter/models"
+	"twiter/models"
+
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-/* Busco un usuario en la BD */
-func EditarUsuario(u models.Usuario, ID string) (bool, error) {
-
-	ctx, cancel:= context.WithTimeout(context.Background(), time.Second*15)
+/*ModificoRegistro permite modificar el perfil del usuario */
+func ModificoRegistro(u models.Usuario, ID string) (bool, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	db := MongoCN.Database("twiter")
-	coleccion := db.Collection("usuarios")
+	col := db.Collection("usuarios")
 
 	registro := make(map[string]interface{})
-
 	if len(u.Nombre) > 0 {
 		registro["nombre"] = u.Nombre
 	}
 	if len(u.Apellidos) > 0 {
-		registro["apellidos"] = u.Apellidos
+		registro["apellido"] = u.Apellidos
 	}
-	registro["fechaNacimiento"] = u.FechaNac
+	registro["fechaNac"] = u.FechaNac
 	if len(u.Avatar) > 0 {
 		registro["avatar"] = u.Avatar
 	}
@@ -49,7 +48,7 @@ func EditarUsuario(u models.Usuario, ID string) (bool, error) {
 	objID, _ := primitive.ObjectIDFromHex(ID)
 	filtro := bson.M{"_id": bson.M{"$eq": objID}}
 
-	_, err := coleccion.UpdateOne(ctx, filtro, updtString)
+	_, err := col.UpdateOne(ctx, filtro, updtString)
 	if err != nil {
 		return false, err
 	}

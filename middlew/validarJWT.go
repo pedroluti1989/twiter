@@ -2,16 +2,16 @@ package middlew
 
 import (
 	"net/http"
-	"github.com/pedroluti1989/twiter/routers"
+	"twiter/routers"
 )
 
-func ValidarJWT ( next http.HandlerFunc) http.HandlerFunc{
-	return func( w http.ResponseWriter, r *http.Request){
-		_,_,_,err := routers.ProcesoToken(r.Header.Get("Authorization"))
+func ValidarJWT(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		_, _, _, err := routers.ProcesoToken(r.Header.Get("Authorization"))
 		if err != nil {
-			http.Error(w,"No es un Token valido"+err.Error(), http.StatusBadRequest)
+			http.Error(w, "No es un Token valido"+err.Error(), http.StatusBadRequest)
 			return
 		}
-		next.ServeHTTP(w,r)
+		next.ServeHTTP(w, r)
 	}
 }

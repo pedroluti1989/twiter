@@ -1,17 +1,16 @@
 package routers
 
-
-
 import (
 	"encoding/json"
 	"net/http"
 	"time"
-	"github.com/pedroluti1989/twiter/models"
-	"github.com/pedroluti1989/twiter/bd"
-	"github.com/pedroluti1989/twiter/jwt"
+	"twiter/bd"
+	"twiter/models"
+
+	"twiter/jwt"
 )
 
-func Login(w http.ResponseWriter, r * http.Request)  {
+func Login(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-type", "application-json")
 
 	var t models.Usuario
@@ -22,7 +21,7 @@ func Login(w http.ResponseWriter, r * http.Request)  {
 		return
 	}
 
-	if len(t.Email) == 0{
+	if len(t.Email) == 0 {
 		http.Error(w, "El Email es un dato requerido", 400)
 		return
 	}
@@ -34,12 +33,12 @@ func Login(w http.ResponseWriter, r * http.Request)  {
 	}
 
 	jwtKey, err := jwt.GeneroJWT(documento)
-	if err != nil{
+	if err != nil {
 		http.Error(w, "Ucurrio un error al generar el Token"+err.Error(), 400)
 		return
 	}
-	resp := models.RespuestaLogin {
-		Token : jwtKey,
+	resp := models.RespuestaLogin{
+		Token: jwtKey,
 	}
 
 	w.Header().Set("Content-type", "application-json")
@@ -49,9 +48,9 @@ func Login(w http.ResponseWriter, r * http.Request)  {
 	/* Guardar Cookie */
 	expirationTime := time.Now().Add(24 * time.Hour)
 	http.SetCookie(w, &http.Cookie{
-		Name: "token",
-		Value: jwtKey,
-		Expires : expirationTime,
+		Name:    "token",
+		Value:   jwtKey,
+		Expires: expirationTime,
 	})
 
 }
