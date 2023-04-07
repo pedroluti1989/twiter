@@ -3,13 +3,14 @@ package routers
 import (
 	"encoding/json"
 	"net/http"
+
 	"github.com/pedroluti1989/twiter/bd"
 	"github.com/pedroluti1989/twiter/models"
 )
 
 /* Paara registrar un Usuario */
-func EditarUsuario(w http.ResponseWriter, r *http.Request){
-	var t  models.Usuario
+func EditarUsuario(w http.ResponseWriter, r *http.Request) {
+	var t models.Usuario
 	err := json.NewDecoder(r.Body).Decode(&t)
 
 	if err != nil {
@@ -17,10 +18,9 @@ func EditarUsuario(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-	vas status bool
+	var status bool
 
-
-	status, err := bd.EditarUsuario(t, IDUsuario)
+	status, err = bd.EditarUsuario(t, IDUsuario)
 
 	if err != nil {
 		http.Error(w, "Ucurrio un error al editar el usuario. Intente nuevamente"+err.Error(), 400)
@@ -31,6 +31,6 @@ func EditarUsuario(w http.ResponseWriter, r *http.Request){
 		http.Error(w, "No se ha logrado editar el usuario", 400)
 		return
 	}
-   /* envio el header, para ve el mensaje 201 de exito */
+	/* envio el header, para ve el mensaje 201 de exito */
 	w.WriteHeader(http.StatusCreated)
 }
