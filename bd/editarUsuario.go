@@ -21,8 +21,8 @@ func ModificoRegistro(u models.Usuario, ID string) (bool, error) {
 	if len(u.Nombre) > 0 {
 		registro["nombre"] = u.Nombre
 	}
-	if len(u.Apellidos) > 0 {
-		registro["apellido"] = u.Apellidos
+	if len(u.Apellido) > 0 {
+		registro["apellido"] = u.Apellido
 	}
 	registro["fechaNac"] = u.FechaNac
 	if len(u.Avatar) > 0 {

@@ -26,7 +26,7 @@ func InsertarUsuario(u models.Usuario) (string, bool, error) {
 
 	registro := bson.M{
 		"nombre":    u.Nombre,
-		"apellido":  u.Apellidos,
+		"apellido":  u.Apellido,
 		"fechaNac":  u.FechaNac,
 		"email":     u.Email,
 		"password":  u.Password,

@@ -30,7 +30,7 @@ func GetUsuario(ID string) (models.Usuario, error) {
 	perfil.Password = ""
 
 	if err != nil {
-		fmt.Println("Usuario no encontrado" + err.Error())
+		fmt.Println("Usuario no encontrado1" + err.Error())
 		return perfil, err
 	}
 

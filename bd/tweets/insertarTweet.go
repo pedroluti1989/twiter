@@ -21,7 +21,7 @@ func InsertarTweet(tweet models.Tweet) (string, bool, error) {
 	coleccion := db.Collection("tweet")
 
 	registro := bson.M{
-		"user_id": tweet.UserID,
+		"userid":  tweet.UserID,
 		"mensaje": tweet.Mensaje,
 		"fecha":   tweet.Fecha,
 	}

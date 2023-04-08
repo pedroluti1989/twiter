@@ -13,7 +13,7 @@ func GeneroJWT(t models.Usuario) (string, error) {
 	payload := jwt.MapClaims{
 		"email":     t.Email,
 		"nombre":    t.Nombre,
-		"apellidos": t.Apellidos,
+		"apellido":  t.Apellido,
 		"fechaNac":  t.FechaNac,
 		"biografia": t.Biografia,
 		"ubicacion": t.Ubicacion,
